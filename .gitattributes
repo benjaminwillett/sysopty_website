@@ -1,0 +1,2 @@
+# The same bytes in every clone: the published files' hashes are pinned in build/package_release.py.
+* -text

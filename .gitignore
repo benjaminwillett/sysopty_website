@@ -1,0 +1,27 @@
+# Private configuration and real identifiers: never in this repository.
+build/private_rules.json
+tests/test_sanitise.py
+.env
+.env.*
+*.env
+!.env.example
+*credentials*.json
+*secret*.json
+*.key
+*.pem
+# Generated
+build/.work/
+dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv*/
+*.log
+# Documents and data stay out, except the one reviewed synthetic sample (its SHA-256 is pinned in build/package_release.py).
+*.pdf
+*.xlsx
+*.xls
+*.xlsm
+*.dot
+*.zip

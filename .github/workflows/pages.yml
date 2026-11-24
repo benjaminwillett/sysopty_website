@@ -1,0 +1,86 @@
+name: Deploy Sysopty static site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        id: pages
+      - name: Prepare the static site
+        env:
+          SYSOPTY_PAGES_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          cp -a public _site
+          python - <<'PY'
+          import hashlib
+          import os
+          import re
+          from pathlib import Path
+
+          root = Path('_site')
+          base = os.environ['SYSOPTY_PAGES_URL'].rstrip('/') + '/'
+          page = root / 'index.html'
+          html = page.read_text()
+          html = re.sub(r'^ *<li><a[^\n]*href="#contact"[^\n]*</li>\n', '', html, flags=re.M)
+          html = re.sub(r'^ *<a[^\n]*data-enquiry="[^"]+"[^\n]*\n.*?</a>\n', '', html, flags=re.M | re.S)
+          html = re.sub(r'    <!-- Contact -->.*?(?=  </main>)', '', html, flags=re.S)
+          html = html.replace('class="btn btn-secondary" href="#sample-reports"', 'class="btn btn-primary" href="#sample-reports"', 1)
+          html = re.sub(r'(?<=[", ])/(?=(?:img|fonts|css|js|samples|demo)/|THIRD_PARTY_NOTICES)', '', html)
+          html = html.replace('https://sysopty.com/', base)
+          if re.search(r'<form\b|data-enquiry|#contact', html):
+              raise SystemExit('The published page still contains enquiry controls')
+
+          script = root / 'js/site.js'
+          js = script.read_text().replace('topology demo and enquiry form', 'and topology demo')
+          js = re.sub(r'  // Calls to action preselect.*?(?=  var year)', '', js, flags=re.S)
+          js = js.replace('"/demo/topology.html"', '"demo/topology.html"')
+          code, marker, _ = js.partition('  // ---------- Enquiry form ----------')
+          if not marker or '/api/' in code:
+              raise SystemExit('Unable to remove the enquiry script safely')
+          script.write_text(code + '})();\n')
+          script_digest = hashlib.sha256(script.read_bytes()).hexdigest()[:12]
+          versioned_script = script.with_name(f"site.{script_digest}.js")
+          versioned_script.write_bytes(script.read_bytes())
+          html = html.replace('src="js/site.js"', f'src="js/{versioned_script.name}"')
+
+          css_file = root / 'css/site.css'
+          css = re.sub(r'/\* ---------- Contact ---------- \*/.*?(?=/\* ---------- Footer)', '', css_file.read_text(), flags=re.S)
+          css = re.sub(r'^.*(?:\.enquiry-form|^\.contact-title).*$\n', '', css, flags=re.M)
+          css = css.replace('.pricing-panel, .contact-grid', '.pricing-panel').replace(', .contact-copy p.eyebrow', '')
+          css_file.write_text(css)
+          css_digest = hashlib.sha256(css_file.read_bytes()).hexdigest()[:12]
+          versioned_css = css_file.with_name(f"site.{css_digest}.css")
+          versioned_css.write_bytes(css_file.read_bytes())
+          html = html.replace('href="css/site.css"', f'href="css/{versioned_css.name}"')
+          page.write_text(html)
+
+          sitemap = root / 'sitemap.xml'
+          sitemap.write_text(sitemap.read_text().replace('https://sysopty.com/', base))
+          (root / 'robots.txt').write_text(f'User-agent: *\nAllow: /\n\nSitemap: {base}sitemap.xml\n')
+          (root / '.nojekyll').touch()
+          PY
+          node --check _site/js/site.js
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

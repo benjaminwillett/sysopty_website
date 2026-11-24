@@ -1,0 +1,31 @@
+# /etc/systemd/system/sysopty-site.service  (Linux)
+[Unit]
+Description=Sysopty website (waitress)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=sysopty
+Group=sysopty
+WorkingDirectory=/opt/sysopty-site/current
+EnvironmentFile=/etc/sysopty-site/site.env
+# waitress drops X-Forwarded-* from untrusted peers: without the --trusted-proxy flags the
+# site never sees HTTPS (no HSTS) and every visitor shares one rate limit. One process only:
+# the rate limit is held in memory.
+ExecStart=/opt/sysopty-site/venv/bin/waitress-serve --listen=127.0.0.1:8080 --threads=8 --ident=sysopty \
+    --trusted-proxy=127.0.0.1 --trusted-proxy-headers="x-forwarded-for x-forwarded-proto x-forwarded-host" \
+    --clear-untrusted-proxy-headers wsgi:app
+Restart=on-failure
+RestartSec=3
+# Hardening: the site only reads its own files.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ReadOnlyPaths=/opt/sysopty-site
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+[Install]
+WantedBy=multi-user.target

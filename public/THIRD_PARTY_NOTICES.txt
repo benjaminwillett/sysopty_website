@@ -1,0 +1,19 @@
+Sysopty website: third-party software and fonts
+================================================
+
+The Sysopty website and the Sysopty software are proprietary. Copyright (c) 2026 Sysopty.
+All rights reserved. Nothing on this website grants a licence to the Sysopty software.
+
+The website uses the following third-party components under their own licences.
+
+Inter (font)
+  Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
+  SIL Open Font License, Version 1.1 - full text: /fonts/OFL-Inter.txt
+
+Poppins (font)
+  Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins)
+  SIL Open Font License, Version 1.1 - full text: /fonts/OFL-Poppins.txt
+
+Product and company names (Cisco, Extreme Networks, Palo Alto Networks, Fortinet and others)
+are trademarks of their respective owners and are used only to describe compatibility.
+The icons, illustrations and product screenshots on this website were created for Sysopty.

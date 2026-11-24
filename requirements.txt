@@ -1,0 +1,5 @@
+# Runtime dependencies of the Sysopty website (tested versions).
+Flask==3.1.1
+Werkzeug==3.1.8
+# Production WSGI server. 3.0.1+ fixes CVE-2024-49768 and CVE-2024-49769 (3.0.0 is affected).
+waitress>=3.0.2

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Sysopty">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fcd34d"/>
+      <stop offset="1" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 6 L58 20 L32 34 L6 20 Z" fill="url(#g)"/>
+  <path d="M8 32 L32 45 L56 32" fill="none" stroke="#f59e0b" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8 44 L32 57 L56 44" fill="none" stroke="#d97706" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

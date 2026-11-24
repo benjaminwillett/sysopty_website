@@ -1,0 +1,9 @@
+# The asset build and the tests, not the running site (requirements.txt). The engine itself runs in the
+# platform's own environment (SYSOPTY_PLATFORM_PYTHON): the two sets of pins differ, so never install them together.
+-r requirements.txt
+pandas==2.2.2
+openpyxl==3.1.2
+pillow==11.2.1
+playwright==1.58.0
+pypdfium2==5.14.0
+pytest==8.3.5
