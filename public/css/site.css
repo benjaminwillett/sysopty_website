@@ -734,3 +734,11 @@ p { margin: 0; }
 #sample-reports .shot-frame img { aspect-ratio: 3 / 2; padding: 0; }
 /* A platform shown by name only. */
 .vendor-label-solo { font-size: 15px; text-align: center; }
+
+/* Related products (2026-11) */
+.related h3 { display: flex; align-items: center; gap: 10px; }
+.related h3 img { width: 30px; height: 30px; flex: none; }
+.related > li > p:not(.tag) { color: var(--text-2); font-size: 15.5px; margin-top: 10px; }
+.related-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 6px 0; font-weight: 600; text-decoration: none; }
+.related-link svg { width: 18px; height: 18px; }
+.related-link:hover { text-decoration: underline; }

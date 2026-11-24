@@ -56,8 +56,10 @@ public/img/hero/page3-1200.webp
 public/img/hero/page3-480.webp
 public/img/hero/page3-640.webp
 public/img/hero/page3-full.webp
+public/img/netopty-mark.svg
 public/img/network-texture.svg
 public/img/og-image.png
+public/img/secopty-mark.svg
 public/img/sysopty-mark.svg
 public/img/vendors/arista.svg
 public/img/vendors/aws.svg
