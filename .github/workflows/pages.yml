@@ -81,6 +81,10 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+      # The deploy step sometimes runs before the uploaded artifact is listed, and fails with
+      # "No artifacts named github-pages were found". A short pause avoids that.
+      - name: Wait for the artifact to be listed
+        run: sleep 30
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
