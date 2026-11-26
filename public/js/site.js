@@ -1,4 +1,4 @@
-// Sysopty marketing site: navigation, lightbox, topology demo and enquiry form.
+// Sysopty marketing site: navigation, lightbox, booking dialog, topology demo and enquiry form.
 (function () {
   "use strict";
 
@@ -240,6 +240,38 @@
   viewport.addEventListener("pointerup", endPointer);
   viewport.addEventListener("pointercancel", endPointer);
   window.addEventListener("resize", function () { if (dialog.open) fit(); });
+
+  // ---------- Booking dialog ----------
+  // "Book a call" links show the shared Microsoft Bookings page in a dialog so
+  // visitors stay on the site. They are ordinary links, so without JavaScript or
+  // <dialog> support they open the booking page in a new tab. (Kept above the
+  // enquiry form section: the Pages build cuts this file off at that marker.)
+  var booking = $("#booking-dialog");
+  var bookingFrame = $("#booking-iframe");
+  var bookingUrl = booking ? booking.getAttribute("data-embed-url") : "";
+  if (booking && bookingFrame && bookingUrl && typeof booking.showModal === "function") {
+    var bookingOpener = null;
+    $$("[data-booking]").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        bookingOpener = a;
+        booking.showModal();
+        document.body.style.overflow = "hidden";
+        // Load the calendar on first open only, after the dialog is showing
+        // (a frame given its src while the dialog is hidden may not load).
+        if (!bookingFrame.getAttribute("src")) {
+          bookingFrame.addEventListener("load", function () { booking.classList.add("is-loaded"); }, { once: true });
+          bookingFrame.setAttribute("src", bookingUrl);
+        }
+      });
+    });
+    $("[data-booking-close]", booking).addEventListener("click", function () { booking.close(); });
+    booking.addEventListener("click", function (e) { if (e.target === booking) booking.close(); });
+    booking.addEventListener("close", function () {
+      document.body.style.overflow = "";
+      if (bookingOpener) bookingOpener.focus();
+    });
+  }
 
   // ---------- Interactive topology demo ----------
   var stage = $("[data-topology]");

@@ -89,9 +89,13 @@ def test_hsts_follows_the_proxy_when_trusted():
     assert "Strict-Transport-Security" in r.headers
 
 
-def test_site_csp_allows_no_third_parties():
+def test_site_csp_allows_only_the_bookings_frame_as_a_third_party():
     csp = client().get("/").headers["Content-Security-Policy"]
-    assert "http" not in csp and "'unsafe-inline'" not in csp and "'unsafe-eval'" not in csp
+    directives = {d.split()[0]: d for d in (part.strip() for part in csp.split(";")) if d}
+    # The only third party anywhere in the policy: Microsoft Bookings, and only as a frame.
+    assert directives["frame-src"] == "frame-src 'self' https://bookings.cloud.microsoft"
+    assert all("http" not in d for name, d in directives.items() if name != "frame-src")
+    assert "'unsafe-inline'" not in csp and "'unsafe-eval'" not in csp
     assert "frame-ancestors 'none'" in csp
 
 

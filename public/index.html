@@ -76,6 +76,10 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
               Explore report previews
             </a>
+            <a class="btn btn-secondary" href="https://bookings.cloud.microsoft/book/sysoptysysoptycom@snowboarding.com.au/?ismsaljsauthenabled" target="_blank" rel="noopener" data-booking>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>
+              Book a call
+            </a>
           </div>
         </div>
 
@@ -391,7 +395,8 @@
             <p>Tell us which platforms, subscriptions, accounts and vCenters are in scope.</p>
           </div>
           <div class="enquiry-actions">
-            <a id="enquiry-address" class="btn btn-primary" href="mailto:enquiries@sysopty.com?subject=Sysopty%20enquiry">enquiries@sysopty.com</a>
+            <a class="btn btn-primary" href="https://bookings.cloud.microsoft/book/sysoptysysoptycom@snowboarding.com.au/?ismsaljsauthenabled" target="_blank" rel="noopener" data-booking>Book a call</a>
+            <a id="enquiry-address" class="btn btn-secondary" href="mailto:enquiries@sysopty.com?subject=Sysopty%20enquiry">enquiries@sysopty.com</a>
             <button class="btn btn-secondary" type="button" data-copy-email hidden>Copy email address</button>
             <p class="sample-note" role="status" data-copy-status></p>
           </div>
@@ -503,6 +508,21 @@
       <button class="lb-btn lb-nav next" type="button" data-lb="next" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
     </div>
     <p class="lb-caption"></p>
+  </dialog>
+
+  <!-- Booking dialog: the shared Microsoft Bookings page shown in-page. "Book a call"
+       links open it; without JavaScript they open the booking page in a new tab.
+       Microsoft allows framing only from HTTPS pages (frame-ancestors https:). -->
+  <dialog class="booking-dialog" id="booking-dialog" aria-labelledby="booking-title" data-embed-url="https://bookings.cloud.microsoft/book/sysoptysysoptycom@snowboarding.com.au/?ismsaljsauthenabled">
+    <div class="lb-bar">
+      <h2 class="lb-title" id="booking-title">Book a call</h2>
+      <button class="lb-btn" type="button" data-booking-close aria-label="Close booking"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="booking-frame">
+      <p class="booking-loading">Loading the booking calendar&hellip;</p>
+      <iframe id="booking-iframe" title="Book a call with Sysopty" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <p class="booking-fallback">Calendar not showing? <a href="https://bookings.cloud.microsoft/book/sysoptysysoptycom@snowboarding.com.au/?ismsaljsauthenabled" target="_blank" rel="noopener">Open the booking page in a new tab</a>.</p>
   </dialog>
 </body>
 </html>

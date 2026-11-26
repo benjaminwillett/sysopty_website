@@ -56,6 +56,8 @@ RATE_LIMIT = 5                # enquiries per address per window
 RATE_WINDOW = 60 * 60
 RATE_TABLE_MAX = 10_000       # addresses remembered before old ones are dropped
 
+# The one third party: the shared Microsoft Bookings page, framed by the "Book a call" dialog.
+BOOKINGS_ORIGIN = "https://bookings.cloud.microsoft"
 SITE_CSP = (
     "default-src 'self'; "
     "img-src 'self' data:; "
@@ -63,7 +65,7 @@ SITE_CSP = (
     "font-src 'self'; "
     "script-src 'self'; "
     "connect-src 'self'; "
-    "frame-src 'self'; "
+    f"frame-src 'self' {BOOKINGS_ORIGIN}; "
     "base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'"
 )
 # The topology demo is a self-contained Plotly page with inline scripts. `sandbox`
